@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="hero_table_1.0.0" author="jnavalon">
+        <createTable tableName="hero">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="pseudonym" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="publisher" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="hero_skills_table_1.0.0" author="jnavalon">
+        <createTable tableName="hero_skills">
+            <column name="hero_id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="skills" type="varchar(MAX)" />
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="hero_id"
+                                 baseTableName="hero_skills"
+                                 constraintName="fk_hero_skills_hero_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="hero"/>
+    </changeSet>
+
+    <changeSet id="hero_allies_table_1.0.0" author="jnavalon">
+        <createTable tableName="hero_allies">
+            <column name="hero_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ally_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="hero_id, ally_id" tableName="hero_allies"/>
+        <addForeignKeyConstraint baseColumnNames="hero_id"
+                                 baseTableName="hero_allies"
+                                 constraintName="fk_hero_allies_hero_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="hero"/>
+        <addForeignKeyConstraint baseColumnNames="ally_id"
+                                 baseTableName="hero_allies"
+                                 constraintName="fk_hero_allies_ally_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="hero"/>
+    </changeSet>
+
+</databaseChangeLog>
